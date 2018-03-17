@@ -65,3 +65,28 @@ if __name__ == '__main__':
     # 作为不可变列表的元组
     # 除了跟增减元素相关的方法之外，元组支持列表的其他所有方法，除了__reversed__方法，但这个方法只是个优化而已，revere(my_tuple)这个用法在没有__reversed__的情况下也是合法的。
     # 列表或元组的方法和属性
+    l1 = [1, 2, 3, 4, 5]
+    t1 = (1, 2, 3, 4, 5)
+    l2 = l1 + [6, 7, 8]
+    t2 = t1 + (6, 7, 8)
+    print(l1)
+    print(t2)
+    l1 += [6, 7, 8]
+    print(l1)
+    l1.append(9)
+    print(l1)
+    l2.clear()
+    print(l2)
+    l2 = l1.copy()
+    print(l2)
+    print(l1)
+    l2.append(10)
+    print(l2)
+    print(l1)
+    print(l1.count(1))
+    print(t1.count(1))
+    del(l1[9])
+    print(l1)
+    l1.extend((11, 12, 13))
+    print(l1)
+    
