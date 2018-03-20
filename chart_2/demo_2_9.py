@@ -15,6 +15,9 @@
     2.9.3 NumPy和SciPy
         凭借NumPy和SciPy提供的高阶数组和矩阵操作，Python成为科学计算应用的主流语言。NumPy实现了多维同质数组和矩阵，这些数据结构不但能处理数字，还能存放其他由用户定义的记录。
         SciPy是基于NumPy的另一个库，提供了很多跟科学计算有关的算法，专为线性代数、数值积分和统计学而设计。
+    2.9.4 双向队列和其他形式的队列
+        collections.deque类是一个线程安全、可以快速从两端添加或者删除元素的数据类型。如果想要一种数据类型来存放最近使用过的几个元素，deque也是一个很好的选择。这个因为在新建双向队列时，可以指定这个队列的大小。如果这个队列满员，还可以从反向端删除过期的元素，然后在微端添加新的元素。
+
 '''
 
 
@@ -23,18 +26,19 @@ import random
 import numpy
 import scipy
 from time import perf_counter as pc
+from collections import deque
 
 
 if __name__ == '__main__':
-    floats = array('d', (random.random() for i in range(10 ** 7)))
-    print(floats[-1])
-    with open('floats.bin', 'wb') as fp:
-        floats.tofile(fp)
-    floats2 = array('d')
-    with open('floats.bin', 'rb') as fp:
-        floats2.fromfile(fp, 10 ** 7)
-    print(floats2[-1])
-    print(floats2 == floats)
+    #floats = array('d', (random.random() for i in range(10 ** 7)))
+    #print(floats[-1])
+    #with open('floats.bin', 'wb') as fp:
+    #    floats.tofile(fp)
+    #floats2 = array('d')
+    # with open('floats.bin', 'rb') as fp:
+    #     floats2.fromfile(fp, 10 ** 7)
+    # print(floats2[-1])
+    # print(floats2 == floats)
 
     numbers = array('h', [-2, -1, 0, 1, 2])
     memv = memoryview(numbers)
@@ -63,15 +67,28 @@ if __name__ == '__main__':
     #with open('floats-10M-lines.txt', 'wb') as fb:
     #    for num in ((random.randint(1000000, 10000000) + random.random()) for i in range(1, 10 ** 7)) :
     #        fb.write(('%s\r\n' % num).encode('gbk'))
-    floats = numpy.loadtxt('floats-10M-lines.txt')
-    print(floats[-3:])
-    floats *= .5
-    print(floats[-3:])
-    t0 = pc()
-    floats /= 3
-    print(pc() - t0)
-    numpy.save('floats-10M', floats)
-    floats2 = numpy.load('floats-10M.npy', 'r+')
-    floats2 *= 6
-    print(floats2[-3:])
+    # floats = numpy.loadtxt('floats-10M-lines.txt')
+    # print(floats[-3:])
+    # floats *= .5
+    # print(floats[-3:])
+    # t0 = pc()
+    # floats /= 3
+    # print(pc() - t0)
+    # numpy.save('floats-10M', floats)
+    # floats2 = numpy.load('floats-10M.npy', 'r+')
+    # floats2 *= 6
+    # print(floats2[-3:])
+
+    dq = deque(range(10), maxlen=10)
+    print(dq)
+    dq.rotate(3)
+    print(dq)
+    dq.rotate(-4)
+    print(dq)
+    dq.appendleft(-1)
+    print(dq)
+    dq.extend([11, 22, 33])
+    print(dq)
+    dq.extendleft([10, 20, 30, 40])
+    print(dq)
 
