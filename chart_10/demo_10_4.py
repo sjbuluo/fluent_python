@@ -10,6 +10,8 @@ import array
 import math
 import reprlib
 import numbers
+import functools
+import operator
 
 
 class Vector:
@@ -77,6 +79,19 @@ class Vector:
                 raise AttributeError(msg)
         super().__setattr__(key, value)
 
+    def __hash__(self):
+        hashes = (hash(x) for x in self._components)
+        # hashes = map(operator.xor, self._components)
+        return functools.reduce(operator.xor, hashes, 0)
+
+    def __eq__(self, other):
+        if len(self) != len(other):
+            return False
+        for a, b in zip(self, other):
+            if a != b:
+                return False
+        return True
+        # return len(self) == len(other) && all(a == b for a,b in zip(self, other))
 
 
 if __name__ == '__main__':
