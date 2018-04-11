@@ -1,6 +1,7 @@
 import random
 from chart_11 import demo_11_7
 
+
 class BingoCage(demo_11_7.Tombola):
 
     def __init__(self, items):
