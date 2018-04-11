@@ -14,6 +14,7 @@ import numbers
 
 class Vector:
     typecode = 'd'
+    shortcut_names = 'xyzt'
 
     def __init__(self, components):
         self._components = array.array(self.typecode, components)
@@ -54,6 +55,29 @@ class Vector:
         if isinstance(item, numbers.Integral):
             return self._components[item]
 
+    def __getattr__(self, item):
+        cls = type(self)
+        if len(item) == 1:
+            pos = cls.shortcut_names.find(item)
+            if 0 <= pos < len(cls.shortcut_names):
+                return self._components[pos]
+        raise AttributeError('{.__name__!r}object has no attribute {!r}'.format(cls, item))
+
+    def __setattr__(self, key, value):
+        cls = type(self)
+        if len(key) == 1:
+            if key in cls.shortcut_names:
+                error = 'readonly attribute {attr_name!r}'
+            elif key.islower():
+                error = 'can\'t set attributes \'a\' to \'z\' in {cls_name!r}'
+            else:
+                error = ''
+            if error:
+                msg = error.format(cls_name=cls.__name__, attr_name=key)
+                raise AttributeError(msg)
+        super().__setattr__(key, value)
+
+
 
 if __name__ == '__main__':
     v1 = Vector([3, 4, 5])
@@ -64,3 +88,7 @@ if __name__ == '__main__':
     print(v1[0], v1[-1])
     v7 = Vector(range(7))
     print(v7[1:4])
+
+    print(v7.x)
+    v1.aa = 'a'
+    v1.x = 1
